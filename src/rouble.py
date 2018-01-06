@@ -18,18 +18,14 @@ popclip_text = os.getenv('POPCLIP_TEXT')
 popclip_text = popclip_text.replace(',', '')
 support_currency = OrderedDict([
     ('USD', 'USD'),
-    ('TWD', 'TWD'),
-    ('NT', 'TWD'),
-    ('HK$', 'HKD'),
     ('$', 'USD'),
     ('£', 'GBP'),
     ('€', 'EUR'),
-    ('円', 'JPY'),
     ('JPY', 'JPY'),
     ('￥', 'JPY')
 ])
 
-locale.setlocale(locale.LC_ALL, 'zh_CN')
+#locale.setlocale(locale.LC_ALL, 'en_US')
 fp = None
 dollars = None
 
@@ -54,7 +50,7 @@ def main():
     except:
         pass
     finally:
-        if time_now - timestamp >= 86400:
+        if time_now - timestamp >= 3600:
             fp.close()
             get_latest_rates()
             fp = open(latest_rates)
@@ -66,9 +62,9 @@ def main():
                 currency, '').replace(' ', '')) / rates_json['rates'][support_currency[currency]]
             break
 
-    chinese_yuan = dollars * rates_json['rates']['CNY']
+    rouble = dollars * rates_json['rates']['RUB']
 
-    print("￥%s" % (locale.format('%.2f', chinese_yuan, grouping=True)))
+    print("%s₽" % (locale.format('%.2f', rouble, grouping=True)))
     fp.close
 
 if __name__ == '__main__':
